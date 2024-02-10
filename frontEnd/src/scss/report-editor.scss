@@ -1,0 +1,315 @@
+.report-viewer {
+  .tag-block {
+    display: inline-block;
+  }
+  .tag-search {
+    margin-right: 12px;
+  }
+  .tag-plus {
+    position: absolute;
+    right: 53px;
+  }
+  .tag-chip {
+    background-color: #fff;
+    border-color: #999;
+    border-width: 1px !important;
+  }
+  .v-chip--variant-tonal .v-chip__underlay {
+    background-color: #fff !important;
+  }
+  .preview {
+    top: 8px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+}
+.view-pane {
+  padding-right: 0px !important;
+  pre {
+    font-family: "ＭＳ 明朝";
+    font-size: 1em;
+    width: 100%;
+    overflow-x: auto;
+    padding: 8px 8px 16px 8px !important;
+  }
+  .v-expansion-panel-text__wrapper {
+    padding: 8px 0px 16px 8px !important;
+  }
+  .v-expansion-panel__shadow {
+    box-shadow: none;
+  }
+  .text-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .v-chip {
+    cursor: pointer;
+  }
+  .base-info {
+    margin-top: 8px;
+    .v-divider {
+      margin: 24px 0px;
+    }
+  }
+  .text-view {
+    display: flex;
+  }
+  .text-line-number {
+    width: auto;
+    max-width: 44px;
+    border-right: 1px solid #ddd;
+    text-align: right;
+    color: #999;
+    overflow-x: hidden;
+  }
+  .text-body {
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  .text-focus {
+    background: #ffcccc;
+    display: inline-block;
+  }
+  .text-focus-done {
+    background: #ccddff;
+    display: inline-block;
+  }
+  // .preview-icon {
+  //   position: absolute;
+  //   right: 54px;
+  //   top: 16px;
+  // }
+}
+
+.edit-pane {
+  position: sticky;
+  top: 80;
+  padding-top: 4px !important;
+  padding-left: 0 !important;
+  .edit-area {
+    padding-right: 8px;
+  }
+  .contents-edit {
+    font-size: 1em;
+    width: 100%;
+    min-height: 500px;
+    textarea {
+      padding-left: 8px;
+      font-family: "ＭＳ 明朝";
+      font-size: 1em;
+      width: 100%;
+      min-height: 500px;
+    }
+  }
+  .review-edit {
+    font-size: 1em;
+    width: 100%;
+    min-height: 80px;
+    textarea {
+      font-size: 1em;
+      width: 100%;
+      height: 80px;
+    }
+  }
+}
+
+.comments {
+  .v-expansion-panel-text__wrapper {
+    padding: 8px 16px 0px 16px !important;
+  }
+  .v-expansion-panel__shadow {
+    box-shadow: none;
+  }
+  textarea {
+    font-family: "ＭＳ ゴシック";
+    font-size: 1em;
+    width: 100%;
+    max-height: 80px;
+  }
+  .review-comments {
+    span {
+      padding: 8px;
+      border-radius: 13px;
+      text-align: left;
+      .author {
+        font-size: 0.8em;
+        margin-bottom: 4px;
+      }
+      .comment {
+        width: 100%;
+        line-height: 160%;
+        white-space: pre-line;
+      }
+    }
+    .v-chip {
+      white-space: normal !important;
+    }
+    .v-chip.v-chip--density-default {
+      --v-chip-height: none;
+    }
+    .text-green {
+      color: #039e09 !important;
+    }
+    .v-expansion-panel {
+      padding-bottom: 16px;
+    }
+  }
+}
+
+.report-contents-menu {
+  .v-list.report-tool-menu {
+    padding-top: 0px !important;
+  }
+  .v-list-item__prepend > .v-icon {
+    margin-inline-end: 6px;
+  }
+  .v-list-group__items .v-list-item.pad-start-zero {
+    padding-inline-start: 22px !important;
+  }
+  .v-list-item--link {
+    display: flex;
+  }
+  .pl-section {
+    padding-left: 6px;
+  }
+  .w-section {
+    width: 306px;
+  }
+  .wc-section {
+    width: 306px;
+  }
+  .w-subsection {
+    width: 300px;
+  }
+  .text-overflow {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+  }
+  .report-title {
+    padding: 16px;
+    color: #fff;
+    background-color: #303f9f;
+    border-bottom: 1px solid #ddd;
+  }
+  .focus-section {
+    background: #cde;
+  }
+  .focus-subsection {
+    background: #def;
+  }
+}
+
+.preview-modal {
+  max-width: 1024px;
+  .section {
+    margin-left: 18px;
+  }
+  .subsection {
+    margin-bottom: 28px;
+    margin-left: 18px;
+    .content-block {
+      margin-left: 18px;
+    }
+  }
+  .title {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+  .figure-title {
+    margin-top: 8px;
+  }
+  .table-title {
+    margin-top: 24px;
+    margin-bottom: 4px;
+  }
+  .paragraph-wrap {
+    font-family: "ＭＳ 明朝";
+    white-space: pre-wrap;
+    max-width: 850px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    line-height: 1.6em;
+  }
+  img {
+    max-width: 100%;
+  }
+}
+.v-navigation-drawer__content {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.v-navigation-drawer__content::-webkit-scrollbar {
+  display: none;
+}
+
+.v-field--variant-filled .v-field__overlay {
+  background-color: none !important;
+}
+.edit-contents {
+  height: 500px;
+}
+.edit-contents .v-input {
+  display: block !important;
+  height: 100%;
+  margin-bottom: 0px;
+}
+.edit-contents .v-input__control {
+  height: 440px;
+}
+textarea {
+  height: 500px;
+}
+.editor-tab-group {
+  border-radius: 7px;
+  margin-bottom: 8px;
+}
+.v-tab__slider {
+  height: 6px;
+  background-color: #66ff88;
+  border-radius: 3px;
+  bottom: 3px;
+}
+.overflow-y-auto {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+}
+
+.tag-appender {
+  .v-input--density-default {
+    --v-input-control-height: 0px !important;
+  }
+  .v-input__details {
+    min-height: 0px !important;
+    padding-top: 0px !important;
+  }
+  .tag-options {
+    height: 400px;
+    overflow-y: scroll;
+    padding-top: 0px !important;
+    .v-messages {
+      min-height: 0px !important;
+    }
+  }
+}
+.chapter-number-label {
+  padding-top: 12px;
+}
+
+.v-tooltip .v-overlay__content {
+  background: rgba(var(--v-theme-surface-variant), 0.9) !important;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+@media print {
+  :has(.print-element) > :not(.print-element):not(:has(.print-element)) {
+    display: none;
+  }
+}

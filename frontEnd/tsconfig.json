@@ -1,0 +1,21 @@
+{
+
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "vite-env.d.ts","vite.config.ts"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "ignoreDeprecations": "5.0",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "allowJs": true
+  },
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
+  ]
+}
