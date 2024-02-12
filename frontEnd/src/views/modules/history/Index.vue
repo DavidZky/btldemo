@@ -5,6 +5,8 @@ import  Dayjs  from 'dayjs'
 
 type SearchFormType = {
   facility: string;
+  patient: string;
+  mcr:string;
   page: number;
   limit: number;
   using: {
@@ -14,6 +16,26 @@ type SearchFormType = {
     color: string;
   }[];
 };
+
+type mrcType = {
+  mrc:string;
+  id:number;
+}[]
+
+const items: Ref<mrcType> = ref([
+  {
+    mrc: '中継器1',
+    id: 1,
+  },
+  {
+    mrc: '中継器2',
+    id: 2,
+  },
+  {
+    mrc: '中継器3',
+    id: 3,
+  },
+]);
 
 type TableDataType = {
   time:string;
@@ -25,6 +47,8 @@ type TableDataType = {
 
 const searchForm: Ref<SearchFormType> = ref({
   facility: "",
+  patient: "",
+  mcr: items.value[0].mrc,
   page: 1,
   limit: 5,
   using: [
@@ -166,6 +190,8 @@ const dataOrigin: Ref<TableDataType> = ref([
 const resetSearchForm = () => {
   searchForm.value = {
     facility: "",
+    patient : "",
+    mcr:items.value[0].mrc,
     page: 1,
     limit: 5,
     using: [
@@ -310,7 +336,7 @@ onMounted(() => {
               <v-row>
                 <v-col cols="3">
                   <v-text-field
-                    v-model="searchForm.facility"
+                    v-model="searchForm.patient"
                     label="患者ID"
                     variant="outlined"
                     hint="患者ID"
@@ -320,15 +346,16 @@ onMounted(() => {
                   ></v-text-field>
                 </v-col>
                 <v-col cols="3">
-                  <v-text-field
-                    v-model="searchForm.facility"
+                  <v-select
+                    v-model = "searchForm.mcr"
+                    :items="items"
+                    item-value="mrc"
+                    item-title="mrc"
                     label="中継器"
                     variant="outlined"
                     hint="中継器"
                     prepend-inner-icon="mdi-magnify"
-                    clearable
-                    clear-icon="mdi-backspace-outline"
-                  ></v-text-field>
+                  ></v-select>
                 </v-col>
                 <v-col cols="3">
                   <v-text-field
@@ -348,7 +375,7 @@ onMounted(() => {
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    検索
+                    取消
                   </v-btn>
                 </v-col>
                 <v-col cols="2">
@@ -356,7 +383,7 @@ onMounted(() => {
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    取消
+                    検索
                   </v-btn>
                 </v-col>
               </v-row>

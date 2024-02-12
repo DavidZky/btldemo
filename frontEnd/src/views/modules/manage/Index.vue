@@ -266,7 +266,7 @@ const submitEditDialog = () => {
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    検索
+                    取消
                   </v-btn>
                 </v-col>
                 <v-col cols="1">
@@ -274,7 +274,7 @@ const submitEditDialog = () => {
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    取消
+                    検索
                   </v-btn>
                 </v-col>
               </v-row>
