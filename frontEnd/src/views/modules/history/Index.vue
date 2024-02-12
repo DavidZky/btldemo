@@ -343,12 +343,20 @@ onMounted(() => {
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
+                <v-col cols="10">
                   <v-btn color="cyan" variant="outlined" class="float-right" @click="resetSearchForm">
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    検索結果の消去
+                    検索
+                  </v-btn>
+                </v-col>
+                <v-col cols="2">
+                  <v-btn color="cyan" variant="outlined"  @click="resetSearchForm">
+                    <template #prepend>
+                      <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
+                    </template>
+                    取消
                   </v-btn>
                 </v-col>
               </v-row>

@@ -226,7 +226,7 @@ const submitEditDialog = () => {
           <v-form class="pa-2 pl-6" @submit="searchFormSubmit">
             <v-container>
               <v-row>
-                <v-col cols="4">
+                <v-col cols="3">
                   <v-text-field
                     v-model="searchForm.facility"
                     label="患者ID"
@@ -237,7 +237,7 @@ const submitEditDialog = () => {
                     clear-icon="mdi-backspace-outline"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="3">
                   <v-text-field
                     v-model="searchForm.facility"
                     label="中継機"
@@ -248,7 +248,7 @@ const submitEditDialog = () => {
                     clear-icon="mdi-backspace-outline"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="3">
                   <v-text-field
                     v-model="searchForm.facility"
                     label="設備名"
@@ -261,12 +261,20 @@ const submitEditDialog = () => {
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
+                <v-col cols="11">
                   <v-btn color="cyan" variant="outlined" class="float-right" @click="resetSearchForm">
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    検索結果の消去
+                    検索
+                  </v-btn>
+                </v-col>
+                <v-col cols="1">
+                  <v-btn color="cyan" variant="outlined" class="float-right" @click="resetSearchForm">
+                    <template #prepend>
+                      <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
+                    </template>
+                    取消
                   </v-btn>
                 </v-col>
               </v-row>
