@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, type Ref, ref } from "vue";
+import { onMounted, type Ref, ref , watch} from "vue";
 import saveAs from "file-saver";
+import  Dayjs  from 'dayjs'
 
 type SearchFormType = {
   facility: string;
@@ -44,6 +45,33 @@ const searchForm: Ref<SearchFormType> = ref({
 
 const tableData: Ref<TableDataType> = ref([]);
 const total: Ref<number> = ref(0);
+
+  // 開始時間 + 終了時間
+  const dtStatus :Ref<boolean> = ref(false);
+  const datetime = ref()
+  const formatDate = ref()
+
+  const dtStatusEnd :Ref<boolean> = ref(false);
+  const datetimeEnd = ref()
+  const formatDateEnd = ref()
+
+  defineProps<{
+    modelValue:string,
+    modelValueEnd:string,
+    label:string
+  }>()
+  const emit = defineEmits(['update:modelValue','update:modelValueEnd']) ;
+  const clickHandle = () => {
+    formatDate.value = Dayjs(datetime.value).format("YYYY-MM-DD")
+    emit('update:modelValue',formatDate.value)
+    dtStatus.value = false
+  }
+
+  const clickHandleEnd = () => {
+    formatDateEnd.value = Dayjs(datetimeEnd.value).format("YYYY-MM-DD")
+    emit('update:modelValueEnd',formatDateEnd.value)
+    dtStatusEnd.value = false
+  }
 
 const dataOrigin: Ref<TableDataType> = ref([
   {
@@ -131,7 +159,6 @@ const dataOrigin: Ref<TableDataType> = ref([
     unit:"°C",
   },
 ]);
-
 /**
  * 重置搜索表单
  */
@@ -192,11 +219,6 @@ const getCurrentTime = () => {
       return currentTime;
 }
 
-let startTime = false;
-const datePickerShow = () =>{
-  startTime  = true;
-}
-
 const searchFormSubmit = (e: { preventDefault: () => void; }) => {
   e.preventDefault();
   getTableData();
@@ -224,30 +246,65 @@ onMounted(() => {
             <v-container>
               <v-row>
                 <v-col cols="4">
-                  <v-text-field
-                    v-model="searchForm.facility"
-                    label="開始時間"
-                    variant="outlined"
-                    hint="開始時間"
-                    prepend-inner-icon="mdi-magnify"
-                    clearable
-                    clear-icon="mdi-backspace-outline"
-                    @click="datePickerShow()"
-                  ></v-text-field>
+                  <v-menu
+                  :close-on-content-click="false"
+                  location="bottom"
+                  v-model="dtStatus"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-text-field
+                        v-model="formatDate"
+                        v-bind="props"
+                        label="開始時間"
+                        variant="outlined"
+                        hint="開始時間"
+                        prepend-inner-icon="mdi-magnify"
+                        clearable
+                        clear-icon="mdi-backspace-outline"
+                        readonly
+                      ></v-text-field>
+                      </template>
+                      <v-locale-provider locale="ja">
+                        <v-date-picker v-model="datetime" color="primary">
+                            <template v-slot:actions>
+                              <v-btn color="primary" @click="dtStatus = false">取消</v-btn>
+                              <v-btn color="primary" @click="clickHandle">确定</v-btn>
+                            </template>
+                        </v-date-picker>
+                      </v-locale-provider>
+                  </v-menu>  
                 </v-col>
                 <v-col cols="1">         
                   <v-btn type="submit" block class="mt-2">TO</v-btn>
                 </v-col>
                 <v-col cols="4">
-                  <v-text-field
-                    v-model="searchForm.facility"
-                    label="終了時間"
-                    variant="outlined"
-                    hint="終了時間"
-                    prepend-inner-icon="mdi-magnify"
-                    clearable
-                    clear-icon="mdi-backspace-outline"
-                  ></v-text-field>
+                  <v-menu
+                  :close-on-content-click="false"
+                  location="bottom"
+                  v-model="dtStatusEnd"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-text-field
+                        v-model="formatDateEnd"
+                        v-bind="props"
+                        label="終了時間"
+                        variant="outlined"
+                        hint="終了時間"
+                        prepend-inner-icon="mdi-magnify"
+                        clearable
+                        clear-icon="mdi-backspace-outline"
+                        readonly
+                      ></v-text-field>
+                      </template>
+                      <v-locale-provider locale="ja">
+                        <v-date-picker v-model="datetimeEnd" color="primary">
+                            <template v-slot:actions>
+                              <v-btn color="primary" @click="dtStatusEnd = false">取消</v-btn>
+                              <v-btn color="primary" @click="clickHandleEnd">确定</v-btn>
+                            </template>
+                        </v-date-picker>
+                      </v-locale-provider>
+                  </v-menu> 
                 </v-col>
               </v-row>
               <v-row>
