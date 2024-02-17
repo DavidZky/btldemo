@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import validate from "@/config/validation";
 import { useRouter } from "vue-router";
-
+import { ref} from "vue";
+import {loginApi} from '../../apis/requestApi';
 // import repository from "@/apis/repositoryFactory";
 // import useUserInfoStore from "@/stores/user";
 // import { loginStatus } from "@/config/resetPwdViewItem";
@@ -26,16 +27,30 @@ const disabledSave = (): boolean => {
   return !editPasswordMeta.valid || !userNameMeta.valid;
 };
 
-const login = () => {
+const showFlg = ref(false);
+const message = ref();
+
+const login = async() => {
+  showFlg.value=false;
+  message.value="";
   if (!userName.value) {
     return;
   }
   if (!password.value) {
     return;
   }
-  const params = `username=${userName.value}&password=${encodeURIComponent(password.value)}`;
-  localStorage.setItem("token", "123");
-  router.push("/");
+  const res: any = await loginApi(userName.value,encodeURIComponent(password.value))
+  if (res.loginResult) {
+    localStorage.setItem(userName.value, encodeURIComponent(password.value));
+    router.push("/");
+  } else {
+    showFlg.value=true;
+    // message.value="ユーザーとパスワードが間違っています。";
+    message.value=res.errors;
+  }
+  // const params = `username=${userName.value}&password=${encodeURIComponent(password.value)}`;
+  // localStorage.setItem("token", "123");
+  // router.push("/");
   // const resToken = await repository.user.userLogin(params);
   // if (resToken.status === axios.HttpStatusCode.Ok) {
   //   await userStore.get(resToken.data.access_token);
@@ -75,7 +90,7 @@ const login = () => {
             <v-row>
               <v-col lg="12" align="center">
                 <div class="dress-image pt-sm-12 pb-sm-0 pl-sm-12 pr-sm-12">
-                  <v-img src="loginLogo.png" width="200" class="rounded-shaped" />
+                  <!-- <v-img src="loginLogo.png" width="200" class="rounded-shaped" /> -->
                 </div>
                 <div class="dress-subtitle mb-5">患者管理システム</div>
               </v-col>
@@ -106,6 +121,7 @@ const login = () => {
                       variant="outlined"
                       autocomplete="on"
                     ></v-text-field>
+                    <div v-show="showFlg" class="message-warning">{{message}}</div>
                     <v-btn
                       :disabled="disabledSave()"
                       color="primary"
@@ -125,3 +141,9 @@ const login = () => {
     </v-container>
   </div>
 </template>
+<style scoped>
+.message-warning {
+  color: #fc0707;
+  text-align: center;
+}
+</style>
