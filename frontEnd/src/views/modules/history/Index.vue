@@ -2,6 +2,8 @@
 import { onMounted, type Ref, ref , watch} from "vue";
 import saveAs from "file-saver";
 import  Dayjs  from 'dayjs'
+import message from '../../../components/Message.vue'
+import {historyApi} from '../../../apis/requestApi'
 
 type SearchFormType = {
   facility: string;
@@ -37,14 +39,20 @@ const items: Ref<mrcType> = ref([
   },
 ]);
 
+// type TableDataType = {
+//   time:string;
+//   patient: string;
+//   facility: string;
+//   value:number;
+//   unit:string;
+// }[];
 type TableDataType = {
-  time:string;
-  patient: string;
-  facility: string;
-  value:number;
-  unit:string;
+  create_date:string;
+  patient_code: string;
+  facility_name: string;
+  facility_value:number;
+  value_unit:string;
 }[];
-
 const searchForm: Ref<SearchFormType> = ref({
   facility: "",
   patient: "",
@@ -80,9 +88,9 @@ const total: Ref<number> = ref(0);
   const formatDateEnd = ref()
 
   defineProps<{
-    modelValue:string,
-    modelValueEnd:string,
-    label:string
+    // modelValue:string,
+    // modelValueEnd:string,
+    // label:string
   }>()
   const emit = defineEmits(['update:modelValue','update:modelValueEnd']) ;
   const clickHandle = () => {
@@ -96,93 +104,129 @@ const total: Ref<number> = ref(0);
     emit('update:modelValueEnd',formatDateEnd.value)
     dtStatusEnd.value = false
   }
-
-const dataOrigin: Ref<TableDataType> = ref([
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者1",
-    facility: "設備名1",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者2",
-    facility: "設備名2",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者3",
-    facility: "設備名3",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者4",
-    facility: "設備名4",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者5",
-    facility: "設備名5",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者6",
-    facility: "設備名6",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者7",
-    facility: "設備名7",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者8",
-    facility: "設備名8",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者9",
-    facility: "設備名9",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者10",
-    facility: "設備名10",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者11",
-    facility: "設備名11",
-    value: 26.5,
-    unit:"°C",
-  },
-  {
-    time: '2024-02-01 10:10:10',
-    patient: "患者12",
-    facility: "設備名12",
-    value: 26.5,
-    unit:"°C",
-  },
-]);
+  const dataOrigin: Ref<TableDataType> = ref([
+    { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:33:43", "facility_value": 65.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "拡張期血圧", "create_date": "2024-02-11T08:33:43", "facility_value": 49.00, "value_unit": "mmHg" },
+ { "patient_code": "0000", "facility_name": "収縮期血圧", "create_date": "2024-02-11T08:33:43", "facility_value": 93.00, "value_unit": "mmHg" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:57", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:57", "facility_value": 98.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:56", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:56", "facility_value": 98.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:55", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:55", "facility_value": 98.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:54", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:54", "facility_value": 98.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:53", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:53", "facility_value": 98.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:52", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:52", "facility_value": 98.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:51", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:51", "facility_value": 98.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:50", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:50", "facility_value": 99.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:49", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:49", "facility_value": 99.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:48", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:48", "facility_value": 99.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:47", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:47", "facility_value": 99.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:46", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:46", "facility_value": 99.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-11T08:31:45", "facility_value": 81.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "酸素濃度", "create_date": "2024-02-11T08:31:45", "facility_value": 99.00, "value_unit": "%" },
+ { "patient_code": "0000", "facility_name": "体温", "create_date": "2024-02-11T08:30:33", "facility_value": 36.70, "value_unit": "℃" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-10T08:05:18", "facility_value": 66.00, "value_unit": "ppm" },
+ { "patient_code": "0000", "facility_name": "拡張期血圧", "create_date": "2024-02-10T08:05:18", "facility_value": 47.00, "value_unit": "mmHg" },
+ { "patient_code": "0000", "facility_name": "収縮期血圧", "create_date": "2024-02-10T08:05:18", "facility_value": 93.00, "value_unit": "mmHg" },
+ { "patient_code": "0000", "facility_name": "体温", "create_date": "2024-02-10T07:58:22", "facility_value": 36.60, "value_unit": "℃" },
+ { "patient_code": "0000", "facility_name": "心拍数", "create_date": "2024-02-09T08:21:59", "facility_value": 78.00, "value_unit": "ppm" },
+ ])
+// const dataOrigin: Ref<TableDataType> = ref([
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者1",
+//     facility: "設備名1",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者2",
+//     facility: "設備名2",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者3",
+//     facility: "設備名3",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者4",
+//     facility: "設備名4",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者5",
+//     facility: "設備名5",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者6",
+//     facility: "設備名6",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者7",
+//     facility: "設備名7",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者8",
+//     facility: "設備名8",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者9",
+//     facility: "設備名9",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者10",
+//     facility: "設備名10",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者11",
+//     facility: "設備名11",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+//   {
+//     time: '2024-02-01 10:10:10',
+//     patient: "患者12",
+//     facility: "設備名12",
+//     value: 26.5,
+//     unit:"°C",
+//   },
+// ]);
 /**
  * 重置搜索表单
  */
@@ -211,13 +255,37 @@ const resetSearchForm = () => {
   };
 };
 
+/**
+ * 搜索表单
+ */
+
+const searchFormData = async() => {
+  const formDataReq = new FormData();
+  formDataReq.append("createDateFrom", formatDate.value);
+  formDataReq.append("createDateTo", formatDateEnd.value);
+  formDataReq.append("facilityName", searchForm.value.facility);
+  formDataReq.append("patientCode", searchForm.value.patient);
+  const res: any = await historyApi(formDataReq);
+  // gridOptions.data = res.facilityDataList;
+  tableData.value = res.facilityDataList.filter((item) => {
+    if (searchForm.value.using[0].selected && searchForm.value.using[1].selected) {
+      return searchForm.value.facility.length === 0 || item.facility_name.includes(searchForm.value.facility);
+    } else {
+      return (
+        item.facility_name?.includes(searchForm.value.facility)
+      );
+    }
+  });
+  total.value = tableData.value.length;
+};
+
 const getTableData = () => {
   tableData.value = dataOrigin.value.filter((item) => {
     if (searchForm.value.using[0].selected && searchForm.value.using[1].selected) {
-      return searchForm.value.facility.length === 0 || item.facility.includes(searchForm.value.facility);
+      return searchForm.value.facility.length === 0 || item.facility_name.includes(searchForm.value.facility);
     } else {
       return (
-        item.facility?.includes(searchForm.value.facility)
+        item.facility_name?.includes(searchForm.value.facility)
       );
     }
   });
@@ -227,7 +295,7 @@ const getTableData = () => {
 const csvDownLoad = () => {
       let csvContent = "日時, 患者ID,設備名,値,単位\n";
       dataOrigin.value.forEach((item,index) =>{
-        csvContent += `${item.time}, ${item.patient},${item.facility},${item.value},${item.unit}\n`;
+        csvContent += `${item.create_date}, ${item.patient_code},${item.facility_name},${item.facility_value},${item.value_unit}\n`;
       })
       const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });     
       const fileName = `patient_` + getCurrentTime() + `.csv` ;      
@@ -247,18 +315,36 @@ const getCurrentTime = () => {
 
 const searchFormSubmit = (e: { preventDefault: () => void; }) => {
   e.preventDefault();
-  getTableData();
+  // getTableData();
+  searchFormData();
 };
 
 onMounted(() => {
-  getTableData();
+  // getTableData();
+  searchFormData();
 });
+let messageType : any;
+messageType = "warning";
+const messageText = ref("BBB");
+const showFlg = ref(false);
 </script>
 
 <template>
   <v-app-bar color="light-blue" class="pl-4" title="患者データ照会"></v-app-bar>
   <v-card class="pa-4">
     <v-expansion-panels :model-value="[0]">
+    <message
+      :type="messageType"
+      :message="messageText"
+      :showFlg="showFlg"
+    ></message>
+        <!-- <v-alert
+          v-model="alert"
+          color="warning"
+          icon="$warning"
+          title="Alert title"
+          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus..."
+        ></v-alert> -->
       <v-expansion-panel>
         <v-expansion-panel-title disable-icon-rotate>
           検索
@@ -399,6 +485,29 @@ onMounted(() => {
        </template>
       CSVダウンロード
     </v-btn>
+    <!-- <v-col>
+              <vxe-pager
+                :page-sizes="[50, 70, 100]"
+                :border="true"
+                :background="false"
+                :perfect="false"
+                :layouts="[
+                  'Sizes',
+                  'PrevJump',
+                  'PrevPage',
+                  'Number',
+                  'NextPage',
+                  'NextJump',
+                  'Total',
+                ]"
+              >
+              </vxe-pager>
+              <vxe-grid
+                ref="xTable"
+                v-bind="gridOptions"
+              >
+              </vxe-grid>
+            </v-col> -->
     <v-table fixed-header>
       <thead>
         <tr>
@@ -417,11 +526,11 @@ onMounted(() => {
           )"
           :key="index"
         >
-          <td>{{ item.time}}</td>
-          <td>{{ item.patient }}</td>
-          <td>{{ item.facility }}</td>
-          <td>{{ item.value }}</td>
-          <td>{{ item.unit }}</td>
+          <td>{{ item.create_date}}</td>
+          <td>{{ item.patient_code }}</td>
+          <td>{{ item.facility_name }}</td>
+          <td>{{ item.facility_value }}</td>
+          <td>{{ item.value_unit }}</td>
         </tr>
       </tbody>
     </v-table>

@@ -2,7 +2,7 @@ import { request } from '../utils/request'
 
 export function loginApi(userId:string,password:string) {
     return request({
-        url: '/welcome!login.sv?userId=system'+userId+'&password='+password,
+        url: '/fss/welcome!login.sv?userId='+userId+'&password='+password,
         method: 'get'
     })
 }
@@ -17,7 +17,7 @@ export function loginApi(userId:string,password:string) {
 
 export function historyApi(user:any) {
     return request({
-        url: '/web/facility-data!selectFacilityDataList.sv',
+        url: '/fss/web/facility-data!selectFacilityDataList.sv',
         method: 'post',
         data:user
     })
@@ -25,7 +25,7 @@ export function historyApi(user:any) {
 
 export function manageApi(user:any) {
     return request({
-        url: '/web/facility-list!selectFacilityList.sv',
+        url: '/fss/web/facility-list!selectFacilityList.sv',
         method: 'post',
         data:user
     })
@@ -33,7 +33,7 @@ export function manageApi(user:any) {
 
 export function addApi(user:any) {
     return request({
-        url: '/web/facility!editFacility.sv',
+        url: '/fss/web/facility!editFacility.sv',
         method: 'post',
         data:user
     })
@@ -41,7 +41,7 @@ export function addApi(user:any) {
 
 export function systemApi(user:any) {
     return request({
-        url: '/sys/login',
+        url: '/fss/sys/login',
         method: 'post',
         data:user
     })
