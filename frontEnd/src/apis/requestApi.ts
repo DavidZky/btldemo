@@ -31,7 +31,7 @@ export function manageApi(user:any) {
     })
 }
 
-export function addApi(user:any) {
+export function editApi(user:any) {
     return request({
         url: '/fss/web/facility!editFacility.sv',
         method: 'post',
@@ -39,9 +39,30 @@ export function addApi(user:any) {
     })
 }
 
+export function selectPatientApi() {
+    return request({
+        url: '/fss/web/facility-data!selectPatientList.sv',
+        method: 'post'
+    })
+}
+
+export function selectServerApi() {
+    return request({
+        url: '/fss/web/facility-data!selectFacilityServerList.sv',
+        method: 'post'
+    })
+}
+
+export function selectFacilityTypeApi() {
+    return request({
+        url: '/fss/web/facility-data!selectFacilityTypeList.sv',
+        method: 'post'
+    })
+}
+
 export function systemApi(user:any) {
     return request({
-        url: '/fss/sys/login',
+        url: '/fss/sys/XXX',
         method: 'post',
         data:user
     })
