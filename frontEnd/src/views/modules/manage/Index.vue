@@ -5,7 +5,8 @@ import {manageApi, selectPatientApi, selectServerApi, selectFacilityTypeApi, edi
 type SearchFormType = {
   facility: string;
   patientId:string;
-  serverTypeId: string;
+  facilityServerId: string;
+  facilityType: string;
   page: number;
   limit: number;
   using: {
@@ -23,24 +24,6 @@ type serverType = {
 }[]
 
 const serverItems: Ref<serverType> = ref([])
-// const serverItems: Ref<serverType> = ref([
-//   {
-//     serverName: '中継器1',
-//     id: 1,
-//   },
-//   {
-//     serverName: '中継器2',
-//     id: 2,
-//   },
-//   {
-//     serverName: '中継器3',
-//     id: 3,
-//   },
-//   {
-//     serverName: '(カスタム)パスルオキシメータ',
-//     id: 4,
-//   },
-// ]);
 
 type patientList = {
   patientName:string;
@@ -49,28 +32,6 @@ type patientList = {
 }[]
 
 const patientItems: Ref<patientList> = ref([]);
-// const patientItems: Ref<patientList> = ref([
-//   {
-//     "patientName": "テスト患者００１",
-//     "id": 1,
-//     "patientCode": "1001"
-//   },
-//   {
-//     "patientName": "テスト患者００２",
-//     "id": 2,
-//     "patientCode": "1002"
-//   },
-//   {
-//     "patientName": "患者22",
-//     "id": 3,
-//     "patientCode": "1022"
-//   },
-//   {
-//     "patientName": "未設定",
-//     "id": 0,
-//     "patientCode": "9999"
-//   }
-// ]);
 
 type facilityList = {
   facilityTypeName:string;
@@ -78,62 +39,6 @@ type facilityList = {
 }[]
 
 const facilityListItems: Ref<facilityList> = ref([]);
-// const facilityItems: Ref<facilityList> = ref([
-//   {
-//     "facilityTypeName": "LED",
-//     "facilityType": 20230910
-//   },
-//   {
-//     "facilityTypeName": "VM",
-//     "facilityType": 20231223
-//   },
-//   {
-//     "facilityTypeName": "体温計(BabySmile)",
-//     "facilityType": 20230601
-//   },
-//   {
-//     "facilityTypeName": "体温計(BabySmile)",
-//     "facilityType": 20230610
-//   },
-//   {
-//     "facilityTypeName": "体温計(custom)",
-//     "facilityType": 20230609
-//   },
-//   {
-//     "facilityTypeName": "心拍数(custom)",
-//     "facilityType": 20230603
-//   },
-//   {
-//     "facilityTypeName": "心拍数(fujita)",
-//     "facilityType": 20230605
-//   },
-//   {
-//     "facilityTypeName": "酸素濃度(custom)",
-//     "facilityType": 20230602
-//   },
-//   {
-//     "facilityTypeName": "酸素濃度(fujita)",
-//     "facilityType": 20230604
-//   },
-//   {
-//     "facilityTypeName": "収縮期血圧(fujita)",
-//     "facilityType": 20230606
-//   },
-//   {
-//     "facilityTypeName": "拡張期血圧(fujita)",
-//     "facilityType": 20230607
-//   },
-//   {
-//     "facilityTypeName": "血圧計心拍数(fujita)",
-//     "facilityType": 20230608
-//   },
-//   {
-//     "facilityTypeName": "サーマルカメラ",
-//     "facilityType": 20240105
-//   }
-
-// ]);
-
 type TableDataType = {
   facilityName:string;
   facilityTypeName: string;
@@ -147,7 +52,8 @@ type TableDataType = {
 const searchForm: Ref<SearchFormType> = ref({
   facility: "",
   patientId: "",
-  serverTypeId: "",
+  facilityServerId: "",
+  facilityType: "",
   page: 1,
   limit: 10,
   using: [
@@ -169,11 +75,6 @@ const searchForm: Ref<SearchFormType> = ref({
 const tableData: Ref<TableDataType> = ref([]);
 const total: Ref<number> = ref(0);
 
-// const dataOrigin: Ref<TableDataType> = ref([
-//   { "server_id": 4,"server_name": "(カスタム)パスルオキシメータ", "id": 5, "patient_id": 1,"patient_code": "1001", "facility_name": "酸素濃度", "facility_type_id": 20230602, "facility_type_name": "酸素濃度(custom)", "server_ip": "ws://10.8.0.200:9005", "facility_addr": "A4-C1-38-F6-4B-B6" },
-//   { "server_id": 4,"server_name": "(カスタム)パスルオキシメータ", "id": 6, "patient_id": 2,"patient_code": "1002", "facility_name": "心拍数", "facility_type_id": 20230603, "facility_type_name": "心拍数(custom)", "server_ip": "ws://10.8.0.200:9005", "facility_addr": "A4-C1-38-F6-4B-B6" },
-// ])
-
 /**
  * 重置搜索表单
  */
@@ -181,7 +82,8 @@ const resetSearchForm = () => {
   searchForm.value = {
     facility: "",
     patientId: "",
-    serverTypeId: "",
+    facilityServerId: "",
+    facilityType: "",
     page: 1,
     limit: 5,
     using: [
@@ -223,44 +125,20 @@ const initList = async () => {
   Object.keys(editForm).forEach(key => delete editForm[key]);
   const formDataReq = new FormData();
   formDataReq.append("patientId", searchForm.value.patientId);
-  formDataReq.append("facilityServerId", searchForm.value.serverTypeId);
+  formDataReq.append("facilityServerId", searchForm.value.facilityServerId);
   formDataReq.append("facilityName", searchForm.value.facility);
+  formDataReq.append("facilityType", searchForm.value.facilityType);
   const res: any = await manageApi(formDataReq);
-  // gridOptions.data = res.facilityDataList;
-  // tableData.value = res.facilityList.filter((item) => {
-  //   if (searchForm.value.using[0].selected && searchForm.value.using[1].selected) {
-  //     return searchForm.value.facility.length === 0 || item.facility.includes(searchForm.value.facility);
-  //   } else {
-  //     return (
-  //       item.facility?.includes(searchForm.value.facility)
-  //     );
-  //   }
-  // });
   tableData.value = res.facilityList;
   total.value = tableData.value.length;
 };
 
-// const getTableData = () => {
-//   tableData.value = dataOrigin.value.filter((item) => {
-//     if (searchForm.value.using[0].selected && searchForm.value.using[1].selected) {
-//       return searchForm.value.facility.length === 0 || item.facility_name.includes(searchForm.value.facility);
-//     } else {
-//       return (
-//         item.facility_name?.includes(searchForm.value.facility)
-//       );
-//     }
-//   });
-//   total.value = tableData.value.length;
-// };
-
 const searchFormSubmit = (e) => {
   e.preventDefault();
-  // getTableData();
   searchFormData();
 };
 
 onMounted(() => {
-  // getTableData();
   initList();
   searchFormData();
 });
@@ -271,7 +149,7 @@ const editDialog = ref(false);
 const editForm = ref({
   id: null,
   facilityName: "",
-  facilityTypeId: "",
+  facilityType: "",
   facilityAddr:"",
   serverTypeId: "",
   patientId: "",
@@ -279,10 +157,11 @@ const editForm = ref({
 });
 
 const openEditDialog = (data, index, editFlg) => {
+  
   editForm.value = {
     id: data.id,
     facilityName: data.facilityName,
-    facilityTypeId: data.facilityTypeId,
+    facilityType: data.facilityType,
     facilityAddr:data.facilityAddr,
     serverTypeId: data.serverId,
     patientId: data.patientId,
@@ -295,8 +174,8 @@ const submitEditDialog = async() => {
   // getTableData();
   const formDataReq = new FormData();
   formDataReq.append("facilityName", editForm.value.facilityName);
-  formDataReq.append("facilityCode", editForm.value.facilityTypeId);
-  formDataReq.append("facilityType", editForm.value.facilityTypeId);
+  formDataReq.append("facilityCode", editForm.value.facilityType);
+  formDataReq.append("facilityType", editForm.value.facilityType);
   formDataReq.append("facilityServerId", editForm.value.serverTypeId);
   formDataReq.append("facilityAddr", editForm.value.facilityAddr);
   const res: any = await editApi(formDataReq);
@@ -339,7 +218,7 @@ const submitEditDialog = async() => {
                 </v-col>
                 <v-col cols="3">
                   <v-select
-                    v-model = "searchForm.serverTypeId"
+                    v-model = "searchForm.facilityServerId"
                     :items="serverItems"
                     item-value="id"
                     item-title="serverName"
@@ -359,6 +238,19 @@ const submitEditDialog = async() => {
                     clearable
                     clear-icon="mdi-backspace-outline"
                   ></v-text-field>
+                </v-col>
+                <v-col cols="3">
+                  <v-select
+                    v-model = "editForm.facilityType"
+                    :items="facilityListItems"
+                    item-value="facilityType"
+                    item-title="facilityTypeName"
+                    label="設備タイプ"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-magnify"
+                    clearable
+                    clear-icon="mdi-backspace-outline"
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-row>
@@ -420,9 +312,6 @@ const submitEditDialog = async() => {
             <v-btn variant="text" @click="openEditDialog(item, index, true)" @close="editDialog = false">
               <v-icon class="ma-2 text-grey" icon="mdi-pencil-outline"></v-icon>
             </v-btn>
-            <!-- <v-btn variant="text" @click="delDepartment(item, index)">
-              <v-icon class="ma-2 text-grey" icon="mdi-trash-can-outline"></v-icon>
-            </v-btn> -->
           </td>
         </tr>
       </tbody>
@@ -431,16 +320,15 @@ const submitEditDialog = async() => {
     <v-pagination
       v-model="searchForm.page"
       active-color="teal"
-      :length="Math.floor(total / searchForm.limit) + 1"
+      :length="total%searchForm.limit > 0?Math.floor(total / searchForm.limit) + 1:Math.floor(total / searchForm.limit) "
       rounded="circle"
     ></v-pagination>
   </v-card>
 
-  <v-dialog v-model="editDialog" width="800" class="align-start mt-16"  no-click-animation>
+  <v-dialog v-model="editDialog" width="800" class="align-start mt-16">
     <v-card>
       <div class="px-6 py-3 d-flex align-center justify-space-between">
         <span>{{editForm.title}}</span>
-        <v-icon class="cursor-pointer" icon="mdi-close"></v-icon>
       </div>
       <v-divider></v-divider>
       <v-form class="pa-3">
@@ -461,7 +349,7 @@ const submitEditDialog = async() => {
           <v-row>
             <v-col cols="8">
               <v-select
-                v-model = "editForm.facilityTypeId"
+                v-model = "editForm.facilityType"
                 :items="facilityListItems"
                 item-value="facilityType"
                 item-title="facilityTypeName"

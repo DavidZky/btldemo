@@ -15,27 +15,27 @@ export function loginApi(userId:string,password:string) {
 //     })
 // }
 
-export function historyApi(user:any) {
+export function historyApi(data:any) {
     return request({
         url: '/fss/web/facility-data!selectFacilityDataList.sv',
         method: 'post',
-        data:user
+        data:data
     })
 }
 
-export function manageApi(user:any) {
+export function manageApi(data:any) {
     return request({
         url: '/fss/web/facility-list!selectFacilityList.sv',
         method: 'post',
-        data:user
+        data:data
     })
 }
 
-export function editApi(user:any) {
+export function editApi(data:any) {
     return request({
         url: '/fss/web/facility!editFacility.sv',
         method: 'post',
-        data:user
+        data:data
     })
 }
 
@@ -60,10 +60,17 @@ export function selectFacilityTypeApi() {
     })
 }
 
-export function systemApi(user:any) {
+export function systemApi() {
     return request({
-        url: '/fss/sys/XXX',
+        url: '/fss/web/system-setting!getSettingInfo.sv',
+        method: 'post'
+    })
+}
+
+export function systemSaveApi(data:any) {
+    return request({
+        url: '/fss/web/system-setting!updateSettingInfo.sv',
         method: 'post',
-        data:user
+        data:data
     })
 }
