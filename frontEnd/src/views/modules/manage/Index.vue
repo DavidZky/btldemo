@@ -149,7 +149,7 @@ const searchForm: Ref<SearchFormType> = ref({
   patientId: "",
   serverTypeId: "",
   page: 1,
-  limit: 5,
+  limit: 10,
   using: [
     {
       type: 1,
@@ -333,6 +333,8 @@ const submitEditDialog = async() => {
                     label="患者ID"
                     variant="outlined"
                     prepend-inner-icon="mdi-magnify"
+                    clearable
+                    clear-icon="mdi-backspace-outline"
                   ></v-select>
                 </v-col>
                 <v-col cols="3">
@@ -344,6 +346,8 @@ const submitEditDialog = async() => {
                     label="中継器"
                     variant="outlined"
                     prepend-inner-icon="mdi-magnify"
+                    clearable
+                    clear-icon="mdi-backspace-outline"
                   ></v-select>
                 </v-col>
                 <v-col cols="3">
