@@ -99,7 +99,6 @@ const clickHandleEnd = () => {
 /**
  * 重置搜索表单
  */
-
 const resetSearchForm = () => {
   formatDate.value = undefined
   formatDateEnd.value = undefined
@@ -108,7 +107,7 @@ const resetSearchForm = () => {
     patientId : "",
     facilityServerId:"",
     page: 1,
-    limit: 5,
+    limit: 10,
     using: [
       {
         type: 1,
@@ -129,7 +128,6 @@ const resetSearchForm = () => {
 /**
  * 搜索表单
  */
-
 const searchFormData = async() => {
 
   const formDataReq = new FormData();
@@ -141,6 +139,8 @@ const searchFormData = async() => {
   const res: any = await historyApi(formDataReq);
   tableData.value = res.facilityDataList;
   total.value = tableData.value.length;
+  searchForm.value.page = 1;
+  searchForm.value.limit = 10;
 };
 
 // 初期化

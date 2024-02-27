@@ -17,7 +17,7 @@ const initList = async () => {
   showFlg.value=false;
   messageText.value="";
   const res: any = await systemApi();
-  phoneNo.value = res.settings.phoneNo.substring(11);
+  phoneNo.value = res.settings.phoneNo;
 }
 const formSubmit = async(e:any) => {
   showFlg.value=false;

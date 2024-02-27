@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, type Ref, ref } from "vue";
 import {manageApi, selectPatientApi, selectServerApi, selectFacilityTypeApi, editApi} from '../../../apis/requestApi'
+import message from '../../../components/Message.vue'
 
 type SearchFormType = {
   facility: string;
@@ -118,10 +119,11 @@ const initList = async () => {
 /**
  * 搜索表单
  */
-
  const searchFormData = async() => {
-  showFlg.value=false;
-  message.value="";
+  showWarningFlg.value=false;
+  messageWarning.value="";
+  showMessageFlg.value=false;
+  messageText.value="";
   Object.keys(editForm).forEach(key => delete editForm[key]);
   const formDataReq = new FormData();
   formDataReq.append("patientId", searchForm.value.patientId);
@@ -131,6 +133,8 @@ const initList = async () => {
   const res: any = await manageApi(formDataReq);
   tableData.value = res.facilityList;
   total.value = tableData.value.length;
+  searchForm.value.page = 1;
+  searchForm.value.limit = 10;
 };
 
 const searchFormSubmit = (e) => {
@@ -143,11 +147,11 @@ onMounted(() => {
   searchFormData();
 });
 
-const showFlg = ref(false);
-const message = ref();
+const showWarningFlg = ref(false);
+const messageWarning = ref();
 const editDialog = ref(false);
 const editForm = ref({
-  id: null,
+  id: "",
   facilityName: "",
   facilityType: "",
   facilityAddr:"",
@@ -159,7 +163,7 @@ const editForm = ref({
 const openEditDialog = (data, index, editFlg) => {
   
   editForm.value = {
-    id: data.id,
+    id: data.id.toString(),
     facilityName: data.facilityName,
     facilityType: data.facilityType,
     facilityAddr:data.facilityAddr,
@@ -170,20 +174,30 @@ const openEditDialog = (data, index, editFlg) => {
   editDialog.value = true;
 };
 
+let messageType : any;
+messageType = "success";
+const messageText = ref("");
+const showMessageFlg = ref(false);
+
 const submitEditDialog = async() => {
   // getTableData();
   const formDataReq = new FormData();
+  formDataReq.append("id", editForm.value.id);
   formDataReq.append("facilityName", editForm.value.facilityName);
-  formDataReq.append("facilityCode", editForm.value.facilityType);
+  formDataReq.append("facilityCode", editForm.value.patientId);
   formDataReq.append("facilityType", editForm.value.facilityType);
   formDataReq.append("facilityServerId", editForm.value.serverTypeId);
   formDataReq.append("facilityAddr", editForm.value.facilityAddr);
   const res: any = await editApi(formDataReq);
   if(!res.result.success){
-   showFlg.value=true;
-   message.value=res.result.message;
+    showWarningFlg.value=true;
+    messageWarning.value=res.result.message;
+  } else {
+    editDialog.value = false;
+    showMessageFlg.value=true;
+    messageText.value=res.result.message;
+    searchFormData();
   }
-  searchFormData();
 };
 </script>
 
@@ -191,6 +205,11 @@ const submitEditDialog = async() => {
   <v-app-bar color="light-blue" class="pl-4" title="設備管理"></v-app-bar>
   <v-card class="pa-4">
     <v-expansion-panels :model-value="[0]">
+      <message
+      :type="messageType"
+      :message="messageText"
+      :showFlg="showMessageFlg"
+      ></message>
       <v-expansion-panel>
         <v-expansion-panel-title disable-icon-rotate>
           検索
@@ -241,7 +260,7 @@ const submitEditDialog = async() => {
                 </v-col>
                 <v-col cols="3">
                   <v-select
-                    v-model = "editForm.facilityType"
+                    v-model = "searchForm.facilityType"
                     :items="facilityListItems"
                     item-value="facilityType"
                     item-title="facilityTypeName"
@@ -399,7 +418,7 @@ const submitEditDialog = async() => {
             </v-col>
           </v-row>
           <v-row>
-            <div v-show="showFlg" class="message-warning">{{message}}</div>
+            <div v-show="showWarningFlg" class="message-warning">{{messageWarning}}</div>
           </v-row>
           <v-row>
             <v-col cols="8">
@@ -411,7 +430,7 @@ const submitEditDialog = async() => {
                 @click="submitEditDialog"
                 >保存
               </v-btn>
-              <v-btn class="ml-3 float-right" variant="text" @click="editDialog = false,showFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])">キャンセル</v-btn>
+              <v-btn class="ml-3 float-right" variant="text" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])">キャンセル</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -428,4 +447,5 @@ const submitEditDialog = async() => {
   color: #fc0707;
   text-align: center;
 }
+
 </style>
