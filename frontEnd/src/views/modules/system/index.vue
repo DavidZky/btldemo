@@ -46,11 +46,11 @@ const formSubmit = async(e:any) => {
           <v-form class="pa-2 pl-6" @submit="formSubmit">
             <v-container  fluid>
               <v-row>
-                <v-col cols="3" >
+                <v-col cols="2" >
                   <!-- <div>Facetime通信先</div> -->
                   <v-list-subheader class="text-f">Facetime通信先</v-list-subheader>
                 </v-col>
-                <v-col cols="8">
+                <v-col cols="7">
                   <v-text-field
                     v-model="phoneNo"
                     label="通信先"
@@ -59,6 +59,7 @@ const formSubmit = async(e:any) => {
                     clearable
                     clear-icon="mdi-backspace-outline"
                   ></v-text-field>
+                  <div style="margin-top: -35px;"><v-list-subheader class="text-f" style="font-size:medium;">Face Timeは一人の医療従事者と患者を繋ぎます。ここで設定する番号は医療従事者の番号になります。</v-list-subheader></div>
                 </v-col>
               </v-row>
               <v-row>

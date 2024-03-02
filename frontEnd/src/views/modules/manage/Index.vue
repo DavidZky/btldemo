@@ -227,13 +227,7 @@ const submitEditDialog = async() => {
 <template>
   <v-app-bar color="light-blue" class="pl-4" title="設備管理"></v-app-bar>
   <v-card class="pa-4">
-    <v-alert
-        v-model="showMessageFlg"
-        color="success"
-        icon="$success"
-        :text="messageText"
-        closable
-      ></v-alert>
+
     <v-expansion-panels :model-value="expansionV">
       <v-expansion-panel>
         <v-expansion-panel-title disable-icon-rotate>
@@ -327,7 +321,13 @@ const submitEditDialog = async() => {
       </template>
       新規追加
     </v-btn>
-
+    <v-alert
+        v-model="showMessageFlg"
+        color="success"
+        icon="$success"
+        :text="messageText"
+        closable
+      ></v-alert>
     <v-table fixed-header>
       <thead>
         <tr>
@@ -367,6 +367,7 @@ const submitEditDialog = async() => {
       :length="total%searchForm.limit > 0?Math.floor(total / searchForm.limit) + 1:Math.floor(total / searchForm.limit) "
       rounded="circle"
     ></v-pagination>
+
   </v-card>
 
   <v-dialog v-model="editDialog" width="800" class="align-start mt-16" v-dialogDrag>
