@@ -2,7 +2,6 @@
 import { onMounted, type Ref, ref , watch} from "vue";
 import saveAs from "file-saver";
 import  Dayjs  from 'dayjs'
-import message from '../../../components/Message.vue'
 import {historyApi, selectPatientApi, selectServerApi, selectFacilityTypeApi } from '../../../apis/requestApi'
 
 type SearchFormType = {
@@ -46,8 +45,8 @@ type TableDataType = {
 }[];
 const searchForm: Ref<SearchFormType> = ref({
   facility: "",
-  patientId: "",
-  facilityServerId: "",
+  patientId : <any>null,
+  facilityServerId:<any>null,
   page: 1,
   limit: 10,
   using: [
@@ -104,8 +103,8 @@ const resetSearchForm = () => {
   formatDateEnd.value = undefined
   searchForm.value = {
     facility: "",
-    patientId : "",
-    facilityServerId:"",
+    patientId : <any>null,
+    facilityServerId:<any>null,
     page: 1,
     limit: 10,
     using: [
@@ -143,6 +142,7 @@ const searchFormData = async() => {
   searchForm.value.limit = 10;
 };
 
+const expansionV: Ref<any> = ref([0]);
 // 初期化
 const initList = async () => {
   // 患者リスト
@@ -188,21 +188,12 @@ onMounted(() => {
   initList();
   searchFormData();
 });
-let messageType : any;
-messageType = "warning";
-const messageText = ref("");
-const showFlg = ref(false);
 </script>
 
 <template>
   <v-app-bar color="light-blue" class="pl-4" title="患者データ照会"></v-app-bar>
   <v-card class="pa-4">
-    <v-expansion-panels :model-value="[0]">
-    <message
-      :type="messageType"
-      :message="messageText"
-      :showFlg="showFlg"
-    ></message>
+    <v-expansion-panels :model-value="expansionV">
       <v-expansion-panel>
         <v-expansion-panel-title disable-icon-rotate>
           検索

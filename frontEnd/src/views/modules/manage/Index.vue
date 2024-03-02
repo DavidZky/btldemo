@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, type Ref, ref } from "vue";
 import {manageApi, selectPatientApi, selectServerApi, selectFacilityTypeApi, editApi} from '../../../apis/requestApi'
-import message from '../../../components/Message.vue'
 
 type SearchFormType = {
   facility: string;
@@ -52,9 +51,9 @@ type TableDataType = {
 
 const searchForm: Ref<SearchFormType> = ref({
   facility: "",
-  patientId: "",
-  facilityServerId: "",
-  facilityType: "",
+  patientId: <any>null,
+  facilityServerId: <any>null,
+  facilityType: <any>null,
   page: 1,
   limit: 10,
   using: [
@@ -75,18 +74,19 @@ const searchForm: Ref<SearchFormType> = ref({
 
 const tableData: Ref<TableDataType> = ref([]);
 const total: Ref<number> = ref(0);
-
 /**
  * 重置搜索表单
  */
 const resetSearchForm = () => {
+  showMessageFlg.value=false;
+  messageText.value="";
   searchForm.value = {
     facility: "",
-    patientId: "",
-    facilityServerId: "",
-    facilityType: "",
+    patientId: <any>null,
+    facilityServerId: <any>null,
+    facilityType: <any>null,
     page: 1,
-    limit: 5,
+    limit: 10,
     using: [
       {
         type: 1,
@@ -103,6 +103,7 @@ const resetSearchForm = () => {
     ],
   };
 };
+const expansionV: Ref<any> = ref([0]);
 // 初期化
 const initList = async () => {
   // 患者リスト
@@ -137,6 +138,25 @@ const initList = async () => {
   searchForm.value.limit = 10;
 };
 
+// const dataOrigin: Ref<TableDataType> = ref([
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
+// ])
+
 const searchFormSubmit = (e) => {
   e.preventDefault();
   searchFormData();
@@ -145,6 +165,8 @@ const searchFormSubmit = (e) => {
 onMounted(() => {
   initList();
   searchFormData();
+  // tableData.value = dataOrigin.value;
+  // total.value = tableData.value.length;
 });
 
 const showWarningFlg = ref(false);
@@ -191,25 +213,28 @@ const submitEditDialog = async() => {
   const res: any = await editApi(formDataReq);
   if(!res.result.success){
     showWarningFlg.value=true;
-    messageWarning.value=res.result.message;
+    messageWarning.value="保存失敗しましたので管理者を連絡ください";
   } else {
     editDialog.value = false;
-    showMessageFlg.value=true;
-    messageText.value=res.result.message;
     searchFormData();
+    showMessageFlg.value=true;
+    messageText.value="保存しました。";
   }
 };
+
 </script>
 
 <template>
   <v-app-bar color="light-blue" class="pl-4" title="設備管理"></v-app-bar>
   <v-card class="pa-4">
-    <v-expansion-panels :model-value="[0]">
-      <message
-      :type="messageType"
-      :message="messageText"
-      :showFlg="showMessageFlg"
-      ></message>
+    <v-alert
+        v-model="showMessageFlg"
+        color="success"
+        icon="$success"
+        :text="messageText"
+        closable
+      ></v-alert>
+    <v-expansion-panels :model-value="expansionV">
       <v-expansion-panel>
         <v-expansion-panel-title disable-icon-rotate>
           検索
@@ -344,10 +369,11 @@ const submitEditDialog = async() => {
     ></v-pagination>
   </v-card>
 
-  <v-dialog v-model="editDialog" width="800" class="align-start mt-16">
+  <v-dialog v-model="editDialog" width="800" class="align-start mt-16" v-dialogDrag>
     <v-card>
       <div class="px-6 py-3 d-flex align-center justify-space-between">
         <span>{{editForm.title}}</span>
+        <v-icon class="cursor-pointer" icon="mdi-close" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])"></v-icon>
       </div>
       <v-divider></v-divider>
       <v-form class="pa-3">
@@ -445,5 +471,4 @@ const submitEditDialog = async() => {
   color: #fc0707;
   text-align: center;
 }
-
 </style>
