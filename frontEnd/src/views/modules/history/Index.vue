@@ -234,7 +234,7 @@ const showFlg = ref(false);
                         readonly
                       ></v-text-field>
                       </template>
-                      <v-locale-provider>
+                      <v-locale-provider locale="ja">
                         <v-date-picker v-model="datetime" color="primary">
                             <template v-slot:actions>
                               <v-btn color="primary" @click="dtStatus = false">取消</v-btn>
@@ -266,7 +266,7 @@ const showFlg = ref(false);
                         readonly
                       ></v-text-field>
                       </template>
-                      <v-locale-provider>
+                      <v-locale-provider locale="ja">
                         <v-date-picker v-model="datetimeEnd" color="primary">
                             <template v-slot:actions>
                               <v-btn color="primary" @click="dtStatusEnd = false">取消</v-btn>
@@ -327,7 +327,7 @@ const showFlg = ref(false);
                 <v-col cols="2">
                   <v-btn color="cyan" variant="outlined"  @click="searchFormSubmit">
                     <template #prepend>
-                      <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
+                      <v-icon color="cyan" icon="mdi-magnify-minus-outline"></v-icon>
                     </template>
                     検索
                   </v-btn>

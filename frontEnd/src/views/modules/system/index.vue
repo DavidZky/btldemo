@@ -73,7 +73,7 @@ const formSubmit = async(e:any) => {
                 <v-col cols="2">
                   <v-btn color="cyan" variant="outlined"  @click="formSubmit">
                     <template #prepend>
-                      <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
+                      <v-icon color="cyan" icon="mdi-content-save-outline"></v-icon>
                     </template>
                     保存
                   </v-btn>

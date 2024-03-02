@@ -284,7 +284,7 @@ const submitEditDialog = async() => {
                 <v-col cols="1">
                   <v-btn color="cyan" variant="outlined" class="float-right" @click="searchFormSubmit">
                     <template #prepend>
-                      <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
+                      <v-icon color="cyan" icon="mdi-magnify-minus-outline"></v-icon>
                     </template>
                     検索
                   </v-btn>
@@ -358,7 +358,6 @@ const submitEditDialog = async() => {
                 v-model="editForm.facilityName"
                 label="設備名"
                 variant="outlined"
-                hint="設備名"
                 prepend-inner-icon="mdi-pencil-outline"
                 clearable
                 clear-icon="mdi-backspace-outline"
@@ -384,7 +383,6 @@ const submitEditDialog = async() => {
                 v-model="editForm.facilityAddr"
                 label="Macアドレス"
                 variant="outlined"
-                hint="department name"
                 prepend-inner-icon="mdi-pencil-outline"
                 clearable
                 clear-icon="mdi-backspace-outline"
