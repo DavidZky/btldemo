@@ -428,7 +428,7 @@ const submitEditDialog = async() => {
                 @click="submitEditDialog"
                 >保存
               </v-btn>
-              <v-btn class="ml-3 float-right" variant="text" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])">キャンセル</v-btn>
+              <v-btn class="ml-3 float-right" variant="text" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])">取消</v-btn>
             </v-col>
           </v-row>
         </v-container>
