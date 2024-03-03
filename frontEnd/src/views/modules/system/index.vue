@@ -84,7 +84,7 @@ const formSubmit = async(e:any) => {
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    クリア
+                    取消
                   </v-btn>
                 </v-col>
                 <v-col cols="2">
