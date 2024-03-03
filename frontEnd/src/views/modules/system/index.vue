@@ -7,10 +7,15 @@ let messageType : any;
 messageType = "warning";
 const messageText = ref("");
 const showFlg = ref(false);
+const showMessageFlg = ref(false);
 
 onMounted(() => {
   initList();
 });
+
+const clear = () =>{
+  initList();
+}
 
 // 初期化
 const initList = async () => {
@@ -18,6 +23,7 @@ const initList = async () => {
   messageText.value="";
   const res: any = await systemApi();
   phoneNo.value = res.settings.phoneNo;
+  showMessageFlg.value=false;
 }
 const formSubmit = async(e:any) => {
   showFlg.value=false;
@@ -27,13 +33,23 @@ const formSubmit = async(e:any) => {
   const res: any = await systemSaveApi(formDataReq);
   if(!res.result.success){
    showFlg.value=true;
-   messageText.value=res.result.message;
+   messageText.value="保存失敗しましたので管理者を連絡ください";
+  } else {
+    showMessageFlg.value=true;
+    messageText.value="保存しました。";
   }
 };
 </script>
 
 <template>
   <v-app-bar color="light-blue" class="pl-4" title="システム設定"></v-app-bar>
+  <v-alert
+        v-model="showMessageFlg"
+        color="success"
+        icon="$success"
+        :text="messageText"
+        closable
+      ></v-alert>
   <v-card>
     <v-expansion-panels :model-value="[0]">
       <message
@@ -48,27 +64,27 @@ const formSubmit = async(e:any) => {
               <v-row>
                 <v-col cols="2" >
                   <!-- <div>Facetime通信先</div> -->
-                  <v-list-subheader class="text-f">Facetime通信先</v-list-subheader>
+                  <v-list-subheader class="text-f">FaceTime通信元</v-list-subheader>
                 </v-col>
                 <v-col cols="9">
                   <v-text-field
                     v-model="phoneNo"
-                    label="通信先"
+                    label="通信元"
                     variant="outlined"
                     prepend-inner-icon="mdi-magnify"
                     clearable
                     clear-icon="mdi-backspace-outline"
                   ></v-text-field>
-                  <div style="margin-top: -35px;"><v-list-subheader class="text-f" style="font-size:medium;">Face Timeは一人の医療従事者と患者を繋ぎます。ここで設定する番号は医療従事者の番号になります。</v-list-subheader></div>
+                  <div style="margin-top: -35px;"><v-list-subheader class="text-f" style="font-size:medium;">FaceTimeは一人の医療従事者と患者を繋ぎます。ここで設定する番号は医療従事者の番号になります。</v-list-subheader></div>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="10">
-                  <v-btn color="cyan" variant="outlined" class="float-right" @click="phoneNo=''">
+                  <v-btn color="cyan" variant="outlined" class="float-right" @click="clear">
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    取消
+                    クリア
                   </v-btn>
                 </v-col>
                 <v-col cols="2">

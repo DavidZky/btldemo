@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, type Ref, ref } from "vue";
 import {manageApi, selectPatientApi, selectServerApi, selectFacilityTypeApi, editApi} from '../../../apis/requestApi'
+import VueDraggableResizable from "vue-draggable-resizable";
 
 type SearchFormType = {
   facility: string;
@@ -30,6 +31,9 @@ type patientList = {
   id:number;
   patientCode:string;
 }[]
+
+const x :any = 500;
+const y :any = 100;
 
 const patientItems: Ref<patientList> = ref([]);
 
@@ -74,6 +78,7 @@ const searchForm: Ref<SearchFormType> = ref({
 
 const tableData: Ref<TableDataType> = ref([]);
 const total: Ref<number> = ref(0);
+
 /**
  * 重置搜索表单
  */
@@ -117,6 +122,17 @@ const initList = async () => {
   facilityListItems.value = resFacilityList.facilityTypeList;
 };
 
+const dataOrigin: Ref<TableDataType> = ref([
+  {  
+    "serverName": "(カスタム)パスルオキシメータ", 
+     "id": 5, 
+     "facilityName": "酸素濃度(custom)", 
+     "patientCode": "1001", 
+     "facilityTypeName": "酸素濃度(custom)", 
+     "serverIp": "ws://10.8.0.200:9005", 
+     "facilityAddr": "A4-C1-38-F6-4B-B6" ,
+    },
+])
 /**
  * 搜索表单
  */
@@ -133,29 +149,11 @@ const initList = async () => {
   formDataReq.append("facilityType", searchForm.value.facilityType);
   const res: any = await manageApi(formDataReq);
   tableData.value = res.facilityList;
+  //tableData.value = dataOrigin.value;
   total.value = tableData.value.length;
   searchForm.value.page = 1;
   searchForm.value.limit = 10;
 };
-
-// const dataOrigin: Ref<TableDataType> = ref([
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 5, "patientId": 1,"patientCode": "1001", "facilityName": "酸素濃度", "facilityTypeId": 20230602, "facilityTypeName": "酸素濃度(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-//   { "serverId": 4,"serverName": "(カスタム)パスルオキシメータ", "id": 6, "patientId": 2,"patientCode": "1002", "facilityName": "心拍数", "facilityTypeId": 20230603, "facilityTypeName": "心拍数(custom)", "serverIp": "ws://10.8.0.200:9005", "facilityAddr": "A4-C1-38-F6-4B-B6" },
-// ])
 
 const searchFormSubmit = (e) => {
   e.preventDefault();
@@ -221,6 +219,15 @@ const submitEditDialog = async() => {
     messageText.value="保存しました。";
   }
 };
+
+const onResize =  (event) => {
+      console.log('Resizing: ', event);
+    };
+
+const onDrag = (event) =>{
+      x.value = event.x;
+      y.value = event.y;
+    };
 
 </script>
 
@@ -297,7 +304,7 @@ const submitEditDialog = async() => {
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    取消
+                    クリア
                   </v-btn>
                 </v-col>
                 <v-col cols="1">
@@ -370,97 +377,101 @@ const submitEditDialog = async() => {
 
   </v-card>
 
-  <v-dialog v-model="editDialog" width="800" class="align-start mt-16" v-dialogDrag>
-    <v-card>
-      <div class="px-6 py-3 d-flex align-center justify-space-between">
-        <span>{{editForm.title}}</span>
-        <v-icon class="cursor-pointer" icon="mdi-close" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])"></v-icon>
-      </div>
-      <v-divider></v-divider>
-      <v-form class="pa-3">
-        <v-container>
-          <v-row>
-            <v-col cols="8">
-              <v-text-field
-                v-model="editForm.facilityName"
-                label="設備名"
-                variant="outlined"
-                prepend-inner-icon="mdi-pencil-outline"
-                clearable
-                clear-icon="mdi-backspace-outline"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="8">
-              <v-select
-                v-model = "editForm.facilityType"
-                :items="facilityListItems"
-                item-value="facilityType"
-                item-title="facilityTypeName"
-                label="設備タイプ"
-                variant="outlined"
-                prepend-inner-icon="mdi-magnify"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="8">
-              <v-text-field
-                v-model="editForm.facilityAddr"
-                label="Macアドレス"
-                variant="outlined"
-                prepend-inner-icon="mdi-pencil-outline"
-                clearable
-                clear-icon="mdi-backspace-outline"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="8">
-              <v-select
-                v-model = "editForm.patientId"
-                :items="patientItems"
-                item-value="id"
-                item-title="patientCode"
-                label="患者ID"
-                variant="outlined"
-                prepend-inner-icon="mdi-magnify"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="8">
-              <v-select
-                v-model = "editForm.serverTypeId"
-                :items="serverItems"
-                item-value="id"
-                item-title="serverName"
-                label="中継器"
-                variant="outlined"
-                prepend-inner-icon="mdi-magnify"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <div v-show="showWarningFlg" class="message-warning">{{messageWarning}}</div>
-          </v-row>
-          <v-row>
-            <v-col cols="8">
-              <v-btn
-                class="ml-3 float-right"
-                prepend-icon="mdi-pencil-outline"
-                color="cyan"
-                variant="tonal"
-                @click="submitEditDialog"
-                >保存
-              </v-btn>
-              <v-btn class="ml-3 float-right" variant="text" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])">取消</v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-form>
-    </v-card>
+  <v-dialog v-model="editDialog">
+    <vue-draggable-resizable :w="800" :h="800" :x="x" :y="y" @resizing="onResize" @dragging="onDrag">
+      <v-card >
+        <div class="px-6 py-3 d-flex align-center justify-space-between">
+          <span>設備編集</span>
+          <v-icon class="cursor-pointer" icon="mdi-close" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])"></v-icon>
+        </div>
+        <v-divider></v-divider>
+        <v-form class="pa-3">
+          <v-container>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  v-model="editForm.facilityName"
+                  label="設備名"
+                  variant="outlined"
+                  prepend-inner-icon="mdi-pencil-outline"
+                  clearable
+                  clear-icon="mdi-backspace-outline"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="8">
+                <v-select
+                  v-model = "editForm.facilityType"
+                  :items="facilityListItems"
+                  item-value="facilityType"
+                  item-title="facilityTypeName"
+                  label="設備タイプ"
+                  variant="outlined"
+                  prepend-inner-icon="mdi-magnify"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field
+                  v-model="editForm.facilityAddr"
+                  label="Macアドレス"
+                  variant="outlined"
+                  prepend-inner-icon="mdi-pencil-outline"
+                  clearable
+                  clear-icon="mdi-backspace-outline"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="8">
+                <v-select
+                  v-model = "editForm.patientId"
+                  :items="patientItems"
+                  item-value="id"
+                  item-title="patientCode"
+                  label="患者ID"
+                  variant="outlined"
+                  prepend-inner-icon="mdi-magnify"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="8">
+                <v-select
+                  v-model = "editForm.serverTypeId"
+                  :items="serverItems"
+                  item-value="id"
+                  item-title="serverName"
+                  label="中継器"
+                  variant="outlined"
+                  prepend-inner-icon="mdi-magnify"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <div v-show="showWarningFlg" class="message-warning">{{messageWarning}}</div>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-btn
+                  class="ml-3 float-right"
+                  prepend-icon="mdi-content-save-outline"
+                  color="cyan"
+                  variant="tonal"
+                  @click="submitEditDialog"
+                  >保存
+                </v-btn>
+                <v-btn class="ml-3 float-right" 
+                prepend-icon="mdi-backspace-outline"
+                variant="text" @click="editDialog = false,showWarningFlg=false, Object.keys(editForm).forEach(key => delete editForm[key])">取消</v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card>
+    </vue-draggable-resizable>
   </v-dialog>
 </template>
 

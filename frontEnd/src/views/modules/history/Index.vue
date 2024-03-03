@@ -312,7 +312,7 @@ onMounted(() => {
                     <template #prepend>
                       <v-icon color="cyan" icon="mdi-backspace-outline"></v-icon>
                     </template>
-                    取消
+                    クリア
                   </v-btn>
                 </v-col>
                 <v-col cols="2">
