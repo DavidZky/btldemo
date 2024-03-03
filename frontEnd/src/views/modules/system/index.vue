@@ -50,7 +50,7 @@ const formSubmit = async(e:any) => {
                   <!-- <div>Facetime通信先</div> -->
                   <v-list-subheader class="text-f">Facetime通信先</v-list-subheader>
                 </v-col>
-                <v-col cols="7">
+                <v-col cols="9">
                   <v-text-field
                     v-model="phoneNo"
                     label="通信先"
