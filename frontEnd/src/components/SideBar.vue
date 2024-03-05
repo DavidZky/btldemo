@@ -7,7 +7,7 @@ const navigationStore = useNavigationStore();
 const menuList = ref([
   { text: "患者データ照会", icon: "mdi-history", url: "/history" },
   { text: "設備管理", icon: "mdi-folder", url: "/facility" },
-  { text: "システム設定", icon: "mdi-cog", url: "/system" },
+  { text: "FaceTime設定", icon: "mdi-cog", url: "/system" },
 ]);
 console.log(navigationStore);
 </script>

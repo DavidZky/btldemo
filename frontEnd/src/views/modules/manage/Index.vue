@@ -229,6 +229,9 @@ const onDrag = (event) =>{
       y.value = event.y;
     };
 
+const stopPropagation = (e) => {
+  e.stopPropagation();
+};
 </script>
 
 <template>
@@ -321,13 +324,14 @@ const onDrag = (event) =>{
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
-
-    <v-btn class="my-8" color="cyan" variant="outlined" @click="openEditDialog(editForm, null, false)" @close="editDialog = false">
+    <div style="font-size:medium;">※MACアドレスはセンサー識別に使う個体識別番号です。</div>
+  
+    <!-- <v-btn class="my-8" color="cyan" variant="outlined" @click="openEditDialog(editForm, null, false)" @close="editDialog = false">
       <template #prepend>
         <v-icon icon="mdi-plus-circle-outline"></v-icon>
       </template>
       新規追加
-    </v-btn>
+    </v-btn> -->
     <v-alert
         v-model="showMessageFlg"
         color="success"
@@ -340,7 +344,7 @@ const onDrag = (event) =>{
         <tr>
           <th class="text-left">設備名</th>
           <th class="text-left">設備タイプ</th>
-          <th class="text-left">macアドレス</th>
+          <th class="text-left">MACアドレス</th>
           <th class="text-left">中継器名</th>
           <th class="text-left">患者ID</th>
           <th class="text-left">ACTION</th>
@@ -396,6 +400,7 @@ const onDrag = (event) =>{
                   prepend-inner-icon="mdi-pencil-outline"
                   clearable
                   clear-icon="mdi-backspace-outline"
+                  @mousedown:control="stopPropagation"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -409,6 +414,7 @@ const onDrag = (event) =>{
                   label="設備タイプ"
                   variant="outlined"
                   prepend-inner-icon="mdi-magnify"
+                  @mousedown:control="stopPropagation"
                 ></v-select>
               </v-col>
             </v-row>
@@ -416,11 +422,12 @@ const onDrag = (event) =>{
               <v-col cols="8">
                 <v-text-field
                   v-model="editForm.facilityAddr"
-                  label="Macアドレス"
+                  label="MACアドレス"
                   variant="outlined"
                   prepend-inner-icon="mdi-pencil-outline"
                   clearable
                   clear-icon="mdi-backspace-outline"
+                  @mousedown:control="stopPropagation"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -434,6 +441,7 @@ const onDrag = (event) =>{
                   label="患者ID"
                   variant="outlined"
                   prepend-inner-icon="mdi-magnify"
+                  @mousedown:control="stopPropagation"
                 ></v-select>
               </v-col>
             </v-row>
@@ -447,6 +455,7 @@ const onDrag = (event) =>{
                   label="中継器"
                   variant="outlined"
                   prepend-inner-icon="mdi-magnify"
+                  @mousedown:control="stopPropagation"
                 ></v-select>
               </v-col>
             </v-row>

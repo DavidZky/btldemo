@@ -3,8 +3,6 @@ import { onMounted, ref } from "vue";
 import {systemApi, systemSaveApi} from '../../../apis/requestApi'
 
 const phoneNo = ref("");
-let messageType : any;
-messageType = "warning";
 const messageText = ref("");
 const showFlg = ref(false);
 const showMessageFlg = ref(false);
@@ -42,7 +40,7 @@ const formSubmit = async(e:any) => {
 </script>
 
 <template>
-  <v-app-bar color="light-blue" class="pl-4" title="システム設定"></v-app-bar>
+  <v-app-bar color="light-blue" class="pl-4" title="FaceTime設定"></v-app-bar>
   <v-alert
         v-model="showMessageFlg"
         color="success"
@@ -52,11 +50,6 @@ const formSubmit = async(e:any) => {
       ></v-alert>
   <v-card>
     <v-expansion-panels :model-value="[0]">
-      <message
-        :type="messageType"
-        :message="messageText"
-        :showFlg="showFlg"
-      ></message>
       <v-expansion-panel>
         <v-expansion-panel-text>
           <v-form class="pa-2 pl-6" @submit="formSubmit">
@@ -75,7 +68,7 @@ const formSubmit = async(e:any) => {
                     clearable
                     clear-icon="mdi-backspace-outline"
                   ></v-text-field>
-                  <div style="margin-top: -35px;"><v-list-subheader class="text-f" style="font-size:medium;">FaceTimeは一人の医療従事者と患者を繋ぎます。ここで設定する番号は医療従事者の番号になります。</v-list-subheader></div>
+                  <div><v-list-item-subtitle style="font-size:medium;">FaceTimeは一人の医療従事者と患者を繋ぎます。ここで設定する番号は医療従事者の番号になり、Appleアカウント又は電話番号で入力して下さい。</v-list-item-subtitle></div>
                 </v-col>
               </v-row>
               <v-row>

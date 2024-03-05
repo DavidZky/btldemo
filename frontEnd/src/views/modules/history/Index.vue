@@ -68,7 +68,7 @@ const searchForm: Ref<SearchFormType> = ref({
 const tableData: Ref<TableDataType> = ref([]);
 const total: Ref<number> = ref(0);
 
-// 開始時間 + 終了時間
+// 開始日 + 終了日
 const dtStatus :Ref<boolean> = ref(false);
 const datetime = ref()
 const formatDate = ref()
@@ -216,9 +216,9 @@ onMounted(() => {
                       <v-text-field
                         v-model="formatDate"
                         v-bind="props"
-                        label="開始時間"
+                        label="開始日"
                         variant="outlined"
-                        hint="開始時間"
+                        hint="開始日"
                         prepend-inner-icon="mdi-magnify"
                         clearable
                         clear-icon="mdi-backspace-outline"
@@ -248,9 +248,9 @@ onMounted(() => {
                       <v-text-field
                         v-model="formatDateEnd"
                         v-bind="props"
-                        label="終了時間"
+                        label="終了日"
                         variant="outlined"
-                        hint="終了時間"
+                        hint="終了日"
                         prepend-inner-icon="mdi-magnify"
                         clearable
                         clear-icon="mdi-backspace-outline"
@@ -341,8 +341,8 @@ onMounted(() => {
         <tr>
           <th class="text-left">日時</th>
           <th class="text-left">患者ID</th>
-          <th class="text-left">設備名</th>
-          <th class="text-left">値</th>
+          <th class="text-left">センサー設備</th>
+          <th class="text-left">計測値</th>
           <th class="text-left">単位</th>
         </tr>
       </thead>
