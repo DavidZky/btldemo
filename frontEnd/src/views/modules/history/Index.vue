@@ -157,7 +157,7 @@ const initList = async () => {
 };
 
 const csvDownLoad = () => {
-      let csvContent = "日時, 患者ID,設備名,値,単位\n";
+      let csvContent = "日時, 患者ID,センサー設備,計測値,単位\n";
       tableData.value.forEach((item,index) =>{
         csvContent += `${item.createDate}, ${item.patientCode},${item.facilityName},${item.facilityValue},${item.valueUnit}\n`;
       })

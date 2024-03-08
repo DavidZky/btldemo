@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 
 type navigationTypes = {
-  rail: Boolean;
-  show: Boolean;
+  rail: boolean;
+  show: boolean;
 };
 const useNavigationStore = defineStore({
   id: "navigationInfo",

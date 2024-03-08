@@ -204,7 +204,7 @@ const submitEditDialog = async() => {
   const formDataReq = new FormData();
   formDataReq.append("id", editForm.value.id);
   formDataReq.append("facilityName", editForm.value.facilityName);
-  formDataReq.append("facilityCode", editForm.value.patientId);
+  formDataReq.append("patientId", editForm.value.patientId);
   formDataReq.append("facilityType", editForm.value.facilityType);
   formDataReq.append("facilityServerId", editForm.value.serverTypeId);
   formDataReq.append("facilityAddr", editForm.value.facilityAddr);
