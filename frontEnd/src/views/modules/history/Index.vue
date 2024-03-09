@@ -42,6 +42,8 @@ type TableDataType = {
   facilityName: string;
   facilityValue:number;
   valueUnit:string;
+  categoriCode : string;
+  patientId: string;
 }[];
 const searchForm: Ref<SearchFormType> = ref({
   facility: "",
@@ -157,12 +159,12 @@ const initList = async () => {
 };
 
 const csvDownLoad = () => {
-      let csvContent = "日時, 患者ID,センサー設備,計測値,単位\n";
+      let csvContent = "検索日,カルテID,氏名カナ,性別,検査コード,検査名,異常値情報,正常値下限,正常値上限,透析前後,検索値,単位,会社名,オーダ番号\n";
       tableData.value.forEach((item,index) =>{
-        csvContent += `${item.createDate}, ${item.patientCode},${item.facilityName},${item.facilityValue},${item.valueUnit}\n`;
+        csvContent += `${item.createDate}, ${item.patientId},,,${item.categoriCode},${item.facilityName},,,,,${item.valueUnit},,\n`;
       })
-      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });     
-      const fileName = `patient_` + getCurrentTime() + `.csv` ;      
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
+      const fileName = `patient_` + getCurrentTime() + `.csv` ;
       saveAs(blob, fileName);
 }
 
