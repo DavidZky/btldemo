@@ -38,8 +38,10 @@ type facilityList = {
 const facilityListItems: Ref<facilityList> = ref([])
 type TableDataType = {
   createDate:string;
+  createDate02:string;
   patientCode: string;
   facilityName: string;
+  facilityName02: string;
   facilityValue:number;
   valueUnit:string;
   categoriCode : string;
@@ -159,9 +161,19 @@ const initList = async () => {
 };
 
 const csvDownLoad = () => {
+      let csvContent = "日時,患者ID,センサー設備,計測値,単位\n";
+      tableData.value.forEach((item,index) =>{
+        csvContent += `${item.createDate}, ${item.patientCode},${item.facilityName},${item.facilityValue},${item.valueUnit}\n`;
+      })
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
+      const fileName = `patient_` + getCurrentTime() + `.csv` ;
+      saveAs(blob, fileName);
+}
+
+const csvDownLoad02 = () => {
       let csvContent = "検索日,カルテID,氏名カナ,性別,検査コード,検査名,異常値情報,正常値下限,正常値上限,透析前後,検索値,単位,会社名,オーダ番号\n";
       tableData.value.forEach((item,index) =>{
-        csvContent += `${item.createDate}, ${item.patientCode},,,${item.categoriCode},${item.facilityName},,,,,${item.facilityValue},${item.valueUnit},\n`;
+        csvContent += `${item.createDate02}, ${item.patientCode},,,${item.categoriCode},${item.facilityName02},,,,,${item.facilityValue},${item.valueUnit},\n`;
       })
       const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
       const fileName = `patient_` + getCurrentTime() + `.csv` ;
@@ -336,7 +348,13 @@ onMounted(() => {
       <template #prepend>
           <v-icon color="cyan" icon="mdi-download-circle"></v-icon>
        </template>
-      CSVダウンロード
+      CSV出力(標準)
+    </v-btn>
+    <v-btn class="my-8" color="cyan" variant="outlined" @click="csvDownLoad02()" style="margin-left: 20px;">
+      <template #prepend>
+          <v-icon color="cyan" icon="mdi-download-circle"></v-icon>
+       </template>
+       CSV出力(専用)
     </v-btn>
     <v-table fixed-header>
       <thead>
