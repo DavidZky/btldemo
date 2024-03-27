@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onMounted, type Ref, ref , watch} from "vue";
 import saveAs from "file-saver";
-import  Dayjs  from 'dayjs'
-import {historyApi, selectPatientApi, selectServerApi, selectFacilityTypeApi } from '../../../apis/requestApi'
+import  Dayjs  from 'dayjs';
+import {historyApi, selectPatientApi, selectServerApi, selectFacilityTypeApi } from '../../../apis/requestApi';
+import * as encoding from 'encoding-japanese';
 
 type SearchFormType = {
   facility: string;
@@ -175,7 +176,11 @@ const csvDownLoad02 = () => {
       tableData.value.forEach((item,index) =>{
         csvContent += `${item.createDate02}, ${item.patientCode},,,${item.categoriCode},${item.facilityName02},,,,,${item.facilityValue},${item.valueUnit},\n`;
       })
-      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
+      const unicodeList = encoding.stringToCode(csvContent);
+      const shiftJisCodeList = encoding.convert(unicodeList, 'sjis', 'unicode');
+      const shiftJisString = new Uint8Array(shiftJisCodeList);
+      const blob = new Blob([shiftJisString], {type: 'text/csv;charset=sjis'})
+      //const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=sjis' });
       const fileName = `patient_` + getCurrentTime() + `.csv` ;
       saveAs(blob, fileName);
 }
@@ -348,13 +353,13 @@ onMounted(() => {
       <template #prepend>
           <v-icon color="cyan" icon="mdi-download-circle"></v-icon>
        </template>
-      CSV出力(標準)
+       CSV出力(標準 UTF-8)
     </v-btn>
     <v-btn class="my-8" color="cyan" variant="outlined" @click="csvDownLoad02()" style="margin-left: 20px;">
       <template #prepend>
           <v-icon color="cyan" icon="mdi-download-circle"></v-icon>
        </template>
-       CSV出力(専用)
+       CSV出力(専用 Shift_JIS)
     </v-btn>
     <v-table fixed-header>
       <thead>
