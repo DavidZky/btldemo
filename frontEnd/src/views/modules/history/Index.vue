@@ -177,7 +177,10 @@ const csvDownLoad02 = () => {
         csvContent += `${item.createDate02}, ${item.patientCode},,,${item.categoriCode},${item.facilityName02},,,,,${item.facilityValue},${item.valueUnit},\n`;
       })
       const unicodeList = encoding.stringToCode(csvContent);
-      const shiftJisCodeList = encoding.convert(unicodeList, 'sjis', 'unicode');
+      const shiftJisCodeList = encoding.convert(unicodeList, {
+            to: 'SJIS',
+            from: 'UNICODE'
+          });
       const shiftJisString = new Uint8Array(shiftJisCodeList);
       const blob = new Blob([shiftJisString], {type: 'text/csv;charset=sjis'})
       //const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=sjis' });
