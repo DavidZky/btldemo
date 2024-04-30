@@ -67,6 +67,38 @@ export function systemApi() {
     })
 }
 
+export function patients(data:any) {
+    return request({
+        url: '/fss/web/patient!selectPatientList.sv',
+        method: 'post',
+        data:data
+    })
+}
+
+export function addPatient(data:any) {
+    return request({
+        url: '/fss/web/patient!addPatient.sv',
+        method: 'post',
+        data:data
+    })
+}
+
+export function updatePatient(data:any) {
+    return request({
+        url: '/fss/web/patient!updatePatient.sv',
+        method: 'post',
+        data:data
+    })
+}
+
+export function delPatient(data:any) {
+    return request({
+        url: '/fss/web/patient!delPatient.sv',
+        method: 'post',
+        data:data
+    })
+}
+
 export function systemSaveApi(data:any) {
     return request({
         url: '/fss/web/system-setting!updateSettingInfo.sv',

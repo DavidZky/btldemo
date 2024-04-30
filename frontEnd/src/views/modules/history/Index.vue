@@ -8,6 +8,7 @@ import * as encoding from 'encoding-japanese';
 type SearchFormType = {
   facility: string;
   patientId: string;
+  patientCode : string,
   facilityServerId:string;
   page: number;
   limit: number;
@@ -51,6 +52,7 @@ type TableDataType = {
 const searchForm: Ref<SearchFormType> = ref({
   facility: "",
   patientId : <any>null,
+  patientCode : <any>null,
   facilityServerId:<any>null,
   page: 1,
   limit: 10,
@@ -109,6 +111,7 @@ const resetSearchForm = () => {
   searchForm.value = {
     facility: "",
     patientId : <any>null,
+    patientCode : patientItems.value.length > 0 ? patientItems.value[0].patientCode:<any>null,
     facilityServerId:<any>null,
     page: 1,
     limit: 10,
@@ -133,7 +136,12 @@ const resetSearchForm = () => {
  * 搜索表单
  */
 const searchFormData = async() => {
-
+  patientItems.value.filter(index =>{
+    if(index.patientCode === searchForm.value.patientCode ){
+      searchForm.value.patientId = index.id.toString();
+      console.info(searchForm.value.patientId);
+    }
+  });
   const formDataReq = new FormData();
   formDataReq.append("createDateFrom", formatDate.value);
   formDataReq.append("createDateTo", formatDateEnd.value);
@@ -153,6 +161,9 @@ const initList = async () => {
   // 患者リスト
   const resPatient: any = await selectPatientApi();
   patientItems.value = resPatient.patientlist;
+  //patientItems.value = [{id:1,patientCode:'001',patientName:'test'},{id:2,patientCode:'002',patientName:'test'}];
+  searchForm.value.patientId = patientItems.value.length > 0 ? patientItems.value[0].id.toString():<any>null;
+  searchForm.value.patientCode = patientItems.value.length > 0 ? patientItems.value[0].patientCode:<any>null;
   // 中継器
   const resServer: any = await selectServerApi();
   serverItems.value = resServer.patientlist;
@@ -162,16 +173,31 @@ const initList = async () => {
 };
 
 const csvDownLoad = () => {
+
+      let withDate = "";
+      if(( formatDate.value !== undefined && formatDate.value !== null && formatDate.value !== 'null'&& formatDate.value !== '') && 
+          ( formatDateEnd.value !== undefined && formatDateEnd.value !== null && formatDateEnd.value !== 'null'&& formatDateEnd.value !== '' )){
+        withDate = `(` + formatDate.value + `~` + formatDateEnd.value + `)` + `.csv`;
+      }
+      
       let csvContent = "日時,患者ID,センサー設備,計測値,単位\n";
       tableData.value.forEach((item,index) =>{
         csvContent += `${item.createDate}, ${item.patientCode},${item.facilityName},${item.facilityValue},${item.valueUnit}\n`;
       })
       const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8' });
-      const fileName = `patient_` + getCurrentTime() + `.csv` ;
+      //const fileName = `patient_` + getCurrentTime() + `.csv` ;
+      const fileName = patientItems.value.length > 0 ? searchForm.value.patientCode + withDate: `patient_`+ getCurrentTime()  +`.csv` ;
       saveAs(blob, fileName);
 }
 
 const csvDownLoad02 = () => {
+
+      let withDate = "";
+      if(( formatDate.value !== undefined && formatDate.value !== null && formatDate.value !== 'null'&& formatDate.value !== '') && 
+          ( formatDateEnd.value !== undefined && formatDateEnd.value !== null && formatDateEnd.value !== 'null'&& formatDateEnd.value !== '' )){
+        withDate = `(` + formatDate.value + `~` + formatDateEnd.value + `)` + `.csv`;
+      }
+
       let csvContent = "検索日,カルテID,氏名カナ,性別,検査コード,検査名,異常値情報,正常値下限,正常値上限,透析前後,検索値,単位,会社名,オーダ番号\n";
       tableData.value.forEach((item,index) =>{
         csvContent += `${item.createDate02}, ${item.patientCode},,,${item.categoriCode},${item.facilityName02},,,,,${item.facilityValue},${item.valueUnit},\n`;
@@ -184,7 +210,8 @@ const csvDownLoad02 = () => {
       const shiftJisString = new Uint8Array(shiftJisCodeList);
       const blob = new Blob([shiftJisString], {type: 'text/csv;charset=sjis'})
       //const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=sjis' });
-      const fileName = `patient_` + getCurrentTime() + `.csv` ;
+      //const fileName = `patient_` + getCurrentTime() + `.csv` ;
+      const fileName = patientItems.value.length > 0 ? searchForm.value.patientCode + withDate : `patient_`+ getCurrentTime()  +`.csv` ;
       saveAs(blob, fileName);
 }
 
@@ -205,10 +232,10 @@ const searchFormSubmit = (e: { preventDefault: () => void; }) => {
   searchFormData();
 };
 
-onMounted(() => {
+onMounted(async () => {
   // getTableData();
-  initList();
-  searchFormData();
+  await initList();
+  await searchFormData();
 });
 </script>
 
@@ -293,15 +320,13 @@ onMounted(() => {
               <v-row>
                 <v-col cols="3">
                   <v-select
-                    v-model = "searchForm.patientId"
+                    v-model = "searchForm.patientCode"
                     :items="patientItems"
-                    item-value="id"
+                    item-value="patientCode"
                     item-title="patientCode"
                     label="患者ID"
                     variant="outlined"
                     prepend-inner-icon="mdi-magnify"
-                    clearable
-                    clear-icon="mdi-backspace-outline"
                   ></v-select>
                 </v-col>
                 <v-col cols="3">

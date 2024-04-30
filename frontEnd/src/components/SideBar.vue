@@ -8,6 +8,7 @@ const menuList = ref([
   { text: "患者データ照会", icon: "mdi-history", url: "/history" },
   { text: "設備管理", icon: "mdi-folder", url: "/facility" },
   { text: "FaceTime設定", icon: "mdi-cog", url: "/system" },
+  { text: "患者管理", icon: "mdi-account-group", url: "/patient" },
 ]);
 console.log(navigationStore);
 </script>

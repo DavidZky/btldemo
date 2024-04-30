@@ -37,6 +37,14 @@ const router = createRouter({
             sidebar: Sidebar,
           },
         },
+        {
+          path: "/patient",
+          name: "Patient",
+          components: {
+            default: () => import("@/views/modules/patient/Index.vue"),
+            sidebar: Sidebar,
+          },
+        },
         // 没有匹配到
         {
           path: "/:pathMatch(.*)*",
